@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>	
+<template id="report_transporte">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="pisos_reports.report_transporte_document"/>
+        </t>
+    </t>
+</template>
+<template id="report_transporte_document">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+    	 
+        <div class="page">
+        <style>
+               table {
+					    border: 1px solid;
+					    
+					 }
+				  td {
+					    
+					    class : text-left;
+					 }
+				  th {
+						
+						class : text-left;
+					 }
+		</style>
+				<strong><span t-field="doc.name"/></strong>
+				<table style="border:none; width:80%">
+                 	<tr>
+	               		<td><b><span>Transportista</span></b></td>
+						<td ><span t-field="doc.partner_id.name"/></td>
+						<td><b><span>Fecha de salida</span></b></td>
+						<td ><span t-field="doc.fecha_de_salida"/></td>
+					</tr>
+					<tr>
+						<td colspan="2"></td>
+						<td><b><span>Fecha de regreso</span></b></td>
+						<td ><span t-field="doc.fecha_de_regreso"/></td>
+					</tr>
+				</table>
+				
+               		<div align="center">
+              			<h5>Facturas</h5>
+		             </div>
+	                <table style="width:100%;">
+
+	                    <t t-set="sumatoria_saldo_f" t-value="0"/>
+	                    <t t-set="sumatoria_peso_f" t-value="0"/>
+	                    <t t-set="sumatoria_cobrado_f" t-value="0"/>
+	                	<t t-set="sumatoria_volumen_f" t-value="0"/>
+	                	<t t-set="sumatoria_precio_f" t-value="0"/>
+	                	<t t-set="sumatoria_flete_f" t-value="0"/>
+
+	                   		
+                        <tr>
+                        	<div>
+	                            <th><span>Folio</span></th>
+	                            <th><span>Saldo a Cobrar</span></th>
+	                            <th><span>Peso</span></th>
+                            </div>
+                            <div t-if="doc.state != 'draft'">
+	                            <th ><span >Saldo Cobrado</span></th>
+	                            <th ><span >Regreso</span></th>
+	                            <th><span>Observaciones</span></th>
+	                            <th><span>Volumen</span></th>
+	                            <th><span>Precio</span></th>
+	                            <th style="border-right:1px solid black;"><span>Flete</span></th>
+                            </div>
+                    	</tr>           	
+                    	<tr t-foreach='doc.facturas_ids' t-as='line'>
+                    		<t t-set="sumatoria_saldo_f" t-value="sumatoria_saldo_f + line.saldo_a_cobrar"/>
+                    		<t t-set="sumatoria_peso_f" t-value="sumatoria_peso_f + line.peso"/>
+                    		<t t-set="sumatoria_cobrado_f" t-value="sumatoria_cobrado_f + line.saldo_cobrado"/>
+                    		<t t-set="sumatoria_volumen_f" t-value="sumatoria_volumen_f + line.volumen"/>
+                    		<t t-set="sumatoria_precio_f" t-value="sumatoria_precio_f + line.precio"/>
+                    		<t t-set="sumatoria_flete_f" t-value="sumatoria_flete_f + line.flete"/>
+	                    	<div>
+		                    	<td><span t-field="line.folio"/></td>
+		                    	<td><span t-esc="'%.2f'% line.saldo_a_cobrar"/></td>
+		                    	<td><span t-esc="'%.2f'% line.peso"/></td>
+	                    	</div>
+	                    	<div t-if="doc.state != 'draft'">
+		                    	<td><span t-esc="'%.2f'% line.saldo_cobrado"/></td>
+		                    	<td><span t-field="line.regreso"/></td>
+		                    	<td><span t-field="line.observaciones"/></td>
+		                    	<td><span t-esc="'%.2f'% line.volumen"/></td>
+		                    	<td><span t-esc="'%.2f'% line.precio"/></td>
+		                    	<td style="border-right:1px solid black;"><span t-esc="'%.2f'% line.flete"/></td>
+	                    	</div>
+	                   	</tr>
+
+	                   	<tr>
+	                    	<div>
+	                    		<td></td>
+		                    	<td style="border-top:1px solid black;">$ <span t-esc="'%.2f'% sumatoria_saldo_f"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_peso_f"/></td>
+	                    	</div>
+	                    	<div t-if="doc.state != 'draft'">
+	                    		<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_cobrado_f"/></td>
+		                    	<td></td>
+		                    	<td></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_volumen_f"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_precio_f"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_flete_f"/></td>
+		                    	<td style="border-top:1px solid black;"></td>
+	                    	</div>
+	                   	</tr>
+
+
+                    </table>
+                    	<div style="height:50px;"></div>
+	                    	<div align="center">
+	                    		<h5>Compras</h5>
+	                    </div>
+	                <table style="width:100%;">
+
+	                	<t t-set="sumatoria_saldo_c" t-value="0"/>
+	                    <t t-set="sumatoria_peso_c" t-value="0"/>
+	                    <t t-set="sumatoria_cobrado_c" t-value="0"/>
+	                	<t t-set="sumatoria_volumen_c" t-value="0"/>
+	                	<t t-set="sumatoria_precio_c" t-value="0"/>
+	                	<t t-set="sumatoria_clete_c" t-value="0"/>
+
+                    	<tr>
+                        	<div>
+	                            <th><span>Folio</span></th>
+	                            <th><span>Saldo a Cobrar</span></th>
+	                            <th><span>Peso</span></th>
+                            </div>
+                            <div t-if="doc.state != 'draft'">
+	                            <th ><span >Saldo Cobrado</span></th>
+	                            <th ><span >Regreso</span></th>
+	                            <th><span>Observaciones</span></th>
+	                            <th><span>Volumen</span></th>
+	                            <th><span>Precio</span></th>
+	                            <th style="border-right:1px solid black;"><span>Flete</span></th>
+                            </div>
+                    	</tr>                	
+	                    <tr t-foreach='doc.ceompras_ids' t-as='line'>
+	                    	<t t-set="sumatoria_saldo_c" t-value="sumatoria_saldo_c + line.saldo_a_cobrar"/>
+                    		<t t-set="sumatoria_peso_c" t-value="sumatoria_peso_c + line.peso"/>
+                    		<t t-set="sumatoria_cobrado_c" t-value="sumatoria_cobrado_c + line.saldo_cobrado"/>
+                    		<t t-set="sumatoria_volumen_c" t-value="sumatoria_volumen_c + line.volumen"/>
+                    		<t t-set="sumatoria_precio_c" t-value="sumatoria_precio_c + line.precio"/>
+                    		<t t-set="sumatoria_clete_c" t-value="sumatoria_clete_c + line.flete"/>
+	                    	<div>
+		                    	<td><span t-field="line.folio"/></td>
+		                    	<td><span t-esc="'%.2f'% line.saldo_a_cobrar"/></td>
+		                    	<td><span t-esc="'%.2f'% line.peso"/></td>
+	                    	</div>
+	                    	<div t-if="doc.state != 'draft'">
+		                    	<td><span t-esc="'%.2f'% line.saldo_cobrado"/></td>
+		                    	<td><span t-field="line.regreso"/></td>
+		                    	<td><span t-field="line.observaciones"/></td>
+		                    	<td><span t-esc="'%.2f'% line.volumen"/></td>
+		                    	<td><span t-esc="'%.2f'% line.precio"/></td>
+		                    	<td style="border-right:1px solid black;"><span t-esc="'%.2f'% line.flete"/></td>
+	                    	</div>
+	                    </tr>
+	                    <tr>
+	                    	<div>
+	                    		<td></td>
+		                    	<td style="border-top:1px solid black;">$ <span t-esc="'%.2f'% sumatoria_saldo_c"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_peso_c"/></td>
+	                    	</div>
+	                    	<div t-if="doc.state != 'draft'">
+	                    		<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_cobrado_c"/></td>
+		                    	<td></td>
+		                    	<td></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_volumen_c"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_precio_c"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_clete_c"/></td>
+		                    	<td style="border-top:1px solid black;"></td>
+	                    	</div>
+	                   	</tr>
+	       	        </table>
+                    	<div style="height:50px;"></div>
+                    	<div align="center">
+                    		<h5>Transferencias</h5>
+                    	</div>
+	                <table style="width:100%;">
+
+	                	<t t-set="sumatoria_saldo_t" t-value="0"/>
+	                    <t t-set="sumatoria_peso_t" t-value="0"/>
+	                    <t t-set="sumatoria_cobrado_t" t-value="0"/>
+	                	<t t-set="sumatoria_volumen_t" t-value="0"/>
+	                	<t t-set="sumatoria_precio_t" t-value="0"/>
+	                	<t t-set="sumatoria_clete_t" t-value="0"/>
+
+                   	  <tr>
+                        	<div>
+	                            <th><span>Folio</span></th>
+	                            <th><span>Saldo a Cobrar</span></th>
+	                            <th><span>Peso</span></th>
+                            </div>
+                            <div t-if="doc.state != 'draft'">
+	                            <th ><span >Saldo Cobrado</span></th>
+	                            <th ><span >Regreso</span></th>
+	                            <th><span>Observaciones</span></th>
+	                            <th><span>Volumen</span></th>
+	                            <th><span>Precio</span></th>
+	                            <th style="border-right:1px solid black;"><span>Flete</span></th>
+                            </div>
+                    	</tr>                 	
+                	  <tr t-foreach='doc.transferencias_ids' t-as='line'>
+                	  		
+                	  		<t t-set="sumatoria_saldo_t" t-value="sumatoria_saldo_t + line.saldo_a_cobrar"/>
+                    		<t t-set="sumatoria_peso_t" t-value="sumatoria_peso_t + line.peso"/>
+                    		<t t-set="sumatoria_cobrado_t" t-value="sumatoria_cobrado_t + line.saldo_cobrado"/>
+                    		<t t-set="sumatoria_volumen_t" t-value="sumatoria_volumen_t + line.volumen"/>
+                    		<t t-set="sumatoria_precio_t" t-value="sumatoria_precio_t + line.precio"/>
+                    		<t t-set="sumatoria_clete_t" t-value="sumatoria_clete_t + line.flete"/>
+
+                	  		<div>
+		                    	<td><span t-field="line.folio"/></td>
+		                    	<td><span t-esc="'%.2f'% line.saldo_a_cobrar"/></td>
+		                    	<td><span t-esc="'%.2f'% line.peso"/></td>
+	                    	</div>
+	                    	<div t-if="doc.state != 'draft'">
+		                    	<td><span t-esc="'%.2f'% line.saldo_cobrado"/></td>
+		                    	<td><span t-field="line.regreso"/></td>
+		                    	<td><span t-field="line.observaciones"/></td>
+		                    	<td><span t-esc="'%.2f'% line.volumen"/></td>
+		                    	<td><span t-esc="'%.2f'% line.precio"/></td>
+		                    	<td style="border-right:1px solid black;"><span t-esc="'%.2f'% line.flete"/></td>
+	                    	</div>
+	                   	</tr>
+
+	                   	<tr>
+	                    	<div>
+	                    		<td></td>
+		                    	<td style="border-top:1px solid black;">$ <span t-esc="'%.2f'% sumatoria_saldo_t"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_peso_t"/></td>
+	                    	</div>
+	                    	<div t-if="doc.state != 'draft'">
+	                    		<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_cobrado_t"/></td>
+		                    	<td></td>
+		                    	<td></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_volumen_t"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_precio_t"/></td>
+		                    	<td style="border-top:1px solid black;"><span t-esc="'%.2f'% sumatoria_clete_t"/></td>
+		                    	<td style="border-top:1px solid black;"></td>
+	                    	</div>
+	                   	</tr>
+
+                  </table>           
+	     </div> 
+	    </t>
+	  </t>
+</template>
+</odoo>

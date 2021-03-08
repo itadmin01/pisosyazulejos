@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_expense_document">
+    <t t-call="web.internal_layout">
+        <t t-set="doc" t-value="doc"/>
+        <div class="page">
+            <div class="oe_structure"/>
+	            <h6>
+	            	<div class="row mt32 mb10" style="margin-left:5px">
+	                	<div t-if="doc.sequence" >
+		                		<strong><span t-esc="doc.sequence"/></strong> 
+		                </div>
+	                </div> 
+	                <div class="row mt5 mb5 ml5" style="margin-left:5px">
+		                <div t-if="doc.date">
+		                		<strong><span t-esc="doc.date"/></strong>
+		                </div>	
+	                </div>
+	                <div class="row mt5 mb5 ml5" style="margin-left:5px">
+		                <div t-if="doc.reference">
+		                		<strong><span t-esc="doc.reference"/></strong> 
+		                </div>	
+	                </div>
+	                <div class="row mt5 mb5" style="margin-left:5px">
+		                <div t-if="doc.analytic_account_id" >
+		                	<strong><span t-esc="doc.analytic_account_id.name"/></strong> 
+		                </div>	
+	                </div>
+	                <div class="row mt5 mb5" style="margin-left:5px">
+		                <div t-if="doc.name">
+		                	<strong><span t-esc="doc.name"/></strong> 
+		                </div>	
+	                </div>
+	                <div class="row mt5 mb5" style="margin-left:5px">
+		                <div t-if="doc.employee_id" >
+		                		<strong><span t-esc="doc.employee_id.name"/></strong> 
+		                </div>	
+	                </div>
+	            </h6>
+            </div>
+            
+            <table class="table table-sm o_main_table" style="margin-top:15px">
+                <thead>
+                    <tr>
+                        <t t-set="colspan" t-value="4"/>
+                        <th class="text-left">Cantidad</th>
+                        <th class="text-right">producto</th>
+                        <th class="text-right">precio unitario</th>
+                        <th class="text-right">total</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                        <tr t-att-class="'table-sm o_main_table'">
+                                <td>
+                                	<span t-field="doc.quantity"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="doc.product_id.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="doc.unit_amount"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="doc.total_amount"/>
+                                </td>
+                        </tr>
+                </tbody>
+            </table>
+            <div style="margin-left:5px">
+		       <div t-if="doc.description">
+	               <strong>NOTAS</strong>
+		             <div style="border:1px solid black; padding:5px;">    	
+            			   <span t-esc="doc.description"/> 
+		             </div>		
+		       </div>
+	        </div> 
+	        
+	        <div style="margin-top:25px;">
+	        	<span>EXPLICACION POR PARTE DEL PROVEEDOR</span>
+	        	<hr width="100%"/>
+				<hr width="100%"/>
+				<hr width="100%"/>
+				<hr width="100%"/>
+				<hr width="100%"/>
+				<div style="margin-top:35px;"/>
+				<hr width="70%"/>				
+				  <div class="text-center">
+					<span>RECIBIO PRODUCTO</span>
+				  </div>
+			</div>
+    </t>
+</template>
+
+
+<template id="report_expense">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="pisos_reports.report_expense_document"/>
+        </t>
+    </t>
+</template>
+
+
+
+</odoo>

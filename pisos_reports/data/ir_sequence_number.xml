@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+        <record id="transporte_ir_sequence" model="ir.sequence">
+            <field name="name">transporte</field>
+            <field name="code">transporte</field>
+            <field name="prefix">POS</field>
+            <field name="padding">5</field>
+        </record>
+        <record id="expense_ir_sequence" model="ir.sequence">
+            <field name="name">expense</field>
+            <field name="code">expense</field>
+            <field name="prefix">EXP</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

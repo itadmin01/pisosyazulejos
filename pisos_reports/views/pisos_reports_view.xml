@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	<record id="view_pisos_reports" model="ir.ui.view">
+	   <field name="name">pisos.reports</field>
+	   <field name="model">pisos.report</field>
+	   <field name="arch" type="xml">
+        <form string="Wizard">
+             <group  string="Dates">
+                 <group>
+                 	<field name="date_start" widget="date" t-options="{'format': 'DD/MM/yyyy'}" />
+                 </group>
+                 <group>
+                 	<field name="date_end" widget="date" t-options="{'format': 'DD/MM/yyyy'}" />
+                 </group>
+                 
+             </group>         
+             <footer>
+                 <button name="action_generate_xls_report" type="object" string="Crear XLS" class="btn-primary"/>
+                 <button string="Cancelar" class="btn-default" special="cancel"/>
+             </footer>
+        </form>
+    	</field>
+   </record>
+   
+   <record id="pisos_action_wizard" model="ir.actions.act_window">
+	    <field name="name">Reporte de facturas entregadas</field>
+	    <field name="res_model">pisos.report</field>
+	    <field name="view_type">tree</field>
+	    <field name="view_mode">form</field>
+	    <field name="view_id" ref="view_pisos_reports"/>
+	    <field name="target">new</field>
+	</record>
+	
+	<menuitem id="reporte_de_facturas_entregadas_sub_menu"  action="pisos_action_wizard" name="Reporte de facturas entregadas" parent="account.menu_finance_reports" sequence="1"  />
+		
+	<record id="view_pisos_reports_no_entregadas" model="ir.ui.view">
+	   <field name="name">pisos.reports</field>
+	   <field name="model">pisos.report</field>
+	   
+	   <field name="arch" type="xml">
+        <form string="Wizard">
+             <group  string="Dates">
+                 <group>
+                 	<field name="date_start" widget="date" t-options="{'format': 'DD/MM/yyyy'}" />
+                 </group>
+                 <group>
+                 	<field name="date_end" widget="date" t-options="{'format': 'DD/MM/yyyy'}" />
+                 </group>
+                 
+             </group>         
+             <footer>
+                 <button name="action_generate_xls_report_no_entregadas" type="object" string="Crear2 XLS" class="btn-primary"/>
+                 <button string="Cancelar" class="btn-primary" special="cancel"/>
+             </footer>
+        </form>
+    	</field>
+   </record>
+	
+	<record id="pisos_action_no_entregadas_wizard" model="ir.actions.act_window">
+	    <field name="name">Reporte de facturas no entregadas</field>
+	    <field name="res_model">pisos.report</field>
+	    <field name="view_type">tree</field>
+	    <field name="view_mode">form</field>
+	    <field name="view_id" ref="view_pisos_reports_no_entregadas"/>
+	    <field name="target">new</field>
+	</record>
+   
+   <menuitem id="reporte_de_facturas_no_entregadas_sub_menu"  
+   			 action="pisos_action_no_entregadas_wizard" name="Reporte de facturas no entregadas" parent="account.menu_finance_reports" sequence="1"  />
+</data>
+</odoo>

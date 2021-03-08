@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- @author Carlos A. Garcia -->
+<odoo>
+    <data>
+        <!-- Inherit invoice report (from module account) -->
+        <template id="report_invoice_prod_weight_vol" inherit_id="account.report_invoice_document">
+            <xpath expr="//table[1]/thead/tr/th[3]" position="after">
+                <th class="text-right">Peso(Kg)</th>
+                <th class="text-right">Vol.(m³)</th>
+            </xpath>
+            <xpath expr="//table[1]/tbody//tr//td[3]" position="after">
+                <td class="text-right">
+                    <span t-field="line.weight"/>
+                </td>
+                <td class="text-right">
+                    <span t-field="line.volume"/>
+                </td>
+            </xpath>
+<!--            <xpath expr="//div[@class='clearfix']/div" position="inside">-->
+            <xpath expr="//div[@class='clearfix']" position="after">
+                <div class="col-xs-12">
+                    <span><b>Peso Total:</b></span>
+                    <span t-field="o.total_weight"/>
+                    <span>Kg</span>
+                    <br/>
+                    <span><b>Vol. Total:</b></span>
+                    <span t-field="o.total_volume"/>
+                    <span>m³</span>
+                    <br/>
+                </div>
+            </xpath>
+<!--			<xpath expr="//div[@class='clearfix']//table/tr[@class='border-black'][2]" position="after">-->
+			<xpath expr="//div[@class='clearfix']//table/tr[@class='border-black o_total']" position="after">
+				<t t-if="o.state in 'draft'">
+                    <tr class="border-black">
+                        <td><strong>Saldo</strong></td>
+                        <td class="text-right">
+                            <span t-field="o.amount_total"/>
+                        </td>
+                    </tr>
+                </t>
+
+                <t t-if="o.state not in 'draft'">
+                    <tr class="border-black">
+                        <td><strong>Saldo</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.residual"/>
+                            </td>
+                    </tr>
+                </t>
+			</xpath>
+			
+        </template>
+    </data>
+</odoo>

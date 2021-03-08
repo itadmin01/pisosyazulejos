@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- @author Carlos A. Garcia -->
+<odoo>
+    <data>
+        <template id="report_invoice_prod_weight_vol" inherit_id="cdfi_invoice.report_invoice_document">
+
+			<xpath expr="//div[@class='page']/div[2]/div/span" position="replace">
+                <div t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;,
+                    &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+			</xpath>
+			<xpath expr="//div[@class='page']/div[@class='row'][1]/div[3]" position="inside">
+                <div>
+                    <t t-if="o.origin">
+                        <strong>Documento origen: </strong>
+                        <span t-field="o.origin"/>
+                    </t>
+                </div>
+                <div>
+                    <t t-if="o.commitment_date">
+                        <strong>Fecha de compromiso: </strong>
+                        <span t-field="o.fecha_compromiso"/>
+                    </t>
+                </div>
+                <div>
+                    <t t-if="o.incoterms_id">
+                        <strong>Incoterms: </strong>
+                        <span t-field="o.incoterms_id.name"/>
+                    </t>
+                </div>
+                <div>
+                    <t t-if="o.user_id">
+                        <strong>Comercial: </strong>
+                        <span t-field="o.user_id.name"/>
+                    </t>
+                </div>
+			</xpath>
+
+            <xpath expr="//table[1]/thead/tr/th[2]" position="after">
+                <th class="text-right">Peso(Kg)</th>
+                <th class="text-right">Vol.(m³)</th>
+            </xpath>
+
+            <xpath expr="//table[1]/tbody//tr//td[2]" position="after">
+                <td class="text-right">
+                    <span t-field="l.weight"/>
+                </td>
+                <td class="text-right">
+                    <span t-field="l.volume"/>
+                </td>
+            </xpath>
+
+			<xpath expr="//div[@class='page']/div[3]//table/tr[@class='border-black'][2]" position="after">
+				<t t-if="o.state in 'draft'">
+                    <tr class="border-black">
+                        <td><strong>Saldo</strong></td>
+                        <td class="text-right">
+                            <span t-field="o.amount_total"/>
+                        </td>
+                    </tr>
+                </t>
+
+                <t t-if="o.state not in 'draft'">
+                    <tr class="border-black">
+                        <td><strong>Saldo</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.residual"/>
+                            </td>
+                    </tr>
+                </t>
+			</xpath>
+
+            <xpath expr="//div[@class='page']/div[4]" position="before">
+                <div class="col-xs-12">
+                    <span><b>Peso Total:</b></span>
+                    <span t-field="o.total_weight"/>
+                    <span>Kg</span>
+                    <br/>
+                    <span><b>Vol. Total:</b></span>
+                    <span t-field="o.total_volume"/>
+                    <span>m³</span>
+                    <br/>
+                </div>
+            </xpath>
+			
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	<record id="view_transporte_relacion_report" model="ir.ui.view">
+	   <field name="name">Transporte.de.relacion</field>
+	   <field name="model">transporte.relacion</field>
+	   <field name="arch" type="xml">
+        <form string="Wizard">
+             <group  string="Relación de transporte">
+                 <group>
+                 	<field name="date_start" widget="date" t-options="{'format': 'DD/MM/yyyy'}" />
+                 </group>
+                 <group>
+                 	<field name="date_end" widget="date" t-options="{'format': 'DD/MM/yyyy'}" />
+                 </group>
+                 
+             </group>         
+             <footer>
+                 <button name="action_generate_xls_report" type="object" string="Crear XLS" class="btn-primary"/>
+                 <button string="Cancelar" class="btn-default" special="cancel"/>
+             </footer>
+        </form>
+    	</field>
+   </record>
+   
+   <record id="transporte_relacion_action_wizard" model="ir.actions.act_window">
+	    <field name="name">Relación de transporte</field>
+	    <field name="res_model">transporte.relacion</field>
+	    <field name="view_type">tree</field>
+	    <field name="view_mode">form</field>
+	    <field name="view_id" ref="view_transporte_relacion_report"/>
+	    <field name="target">new</field>
+	</record>
+	
+	<menuitem id="transporte_relacion_sub_menu"  
+			  action="transporte_relacion_action_wizard" 
+			  name="Relación de transporte" 
+			  parent="stock.menu_warehouse_report" 
+			  sequence="151"  />
+</data>
+</odoo>

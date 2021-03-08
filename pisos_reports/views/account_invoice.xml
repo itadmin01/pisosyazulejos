@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="account_invoice_othert_info_ext" model="ir.ui.view">
+            <field name="name">account.invoice.othert_info_ext</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	 <xpath expr="//page[@name='other_info']/group/group/field[@name='name']" position="after">
+            			<field name="entregado"/>
+           		 </xpath> 
+ 					
+	            </field>
+	        </record>
+	 <record id="account_invoice_supplier_ext" model="ir.ui.view">
+            <field name="name">account.invoice.othert_info_ext</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+            	 <xpath expr="//page[@name='other_info']/group/group/field[@name='name']" position="after">
+            			<field name="entregado"/>
+           		 </xpath> 
+ 					
+	            </field>
+	        </record>       
+	        
+	  <record id="stock_picking_entregando" model="ir.ui.view">
+            <field name="name">Stock Picking Entregando</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+            	 <xpath expr="//page[@name='extra']/group/group/field[@name='move_type']" position="after">
+            			<field name="entregado"/>
+           		 </xpath> 
+ 					
+	        </field>
+	        </record>
+
+	  <record id="purchase_entregando" model="ir.ui.view">
+        <field name="name">purchase.order.form.extended</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            	 <xpath expr="//page[@name='purchase_delivery_invoice']/group/group/field[@name='date_approve']" position="after">
+            			<field name="entregado"/>
+           		 </xpath> 
+ 					
+	        </field>
+	        </record>
+    </data> 
+</odoo>

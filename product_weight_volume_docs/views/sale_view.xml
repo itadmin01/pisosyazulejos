@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- @author Carlos A. Garcia -->
+<odoo>
+    <data>
+        <record id="sale_order_form_product_weight_vol" model="ir.ui.view">
+            <field name="name">sale.order.form.product.weight.vol</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="weight" string="Peso(Kg)"/>
+                    <field name="volume" string="Vol.(m³)"/>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='order_line']/form//field[@name='price_unit']" position="before">
+                    <field name="weight" string="Peso(Kg)"/>
+                    <field name="volume" string="Volumen(m³)"/>
+                </xpath>
+                <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="before">
+                    <group name="total-weight-vol" class="oe_left" colspan="2" col="2">
+                        <label for="total_weight" string="Peso Total(Kg)"/>
+                        <div name="total_weight_div">
+                            <field name="total_weight" class="oe_inline"/>
+                        </div>
+                        <label for="total_volume" string="Vol. Total(m³)"/>
+                        <div name="total_vol_div">
+                            <field name="total_volume" class="oe_inline"/>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <data>
+        <template id="firma_de_conformidad" inherit_id="cdfi_invoice.report_invoice_document">
+            <xpath expr="//t[@t-if='o.comment']" position="after">
+                     <!-- Firma de conformidad-->
+                    <p align="center">_____________________________________</p>
+                    <p align="center">Firma de conformidad</p>
+                    <p>
+                        <center>
+                            <strong>Revisé y recibí en buen estado el material descrito en la factura
+                                    (Después de entregado no se aceptan reclamaciónes)
+                            </strong>
+                        </center>
+                    </p>
+            </xpath>
+        </template>
+     </data>
+</odoo>

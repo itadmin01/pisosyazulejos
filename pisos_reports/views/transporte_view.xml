@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="form_view_transporte">
+	   <field name="name">Transporte</field>
+	   <field name="model">transporte</field>
+	   <field name="type">form</field>
+	   <field name="arch" type="xml">
+		<form string="Transporte">
+			<header>
+                    <button class="oe_highlight" string="Validar" type="object" name="validar_nota" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <field name="state" widget="statusbar" />
+                    <button class="oe_highlight" string="Cerrar" type="object" name="cerrar" attrs="{'invisible':[('state','!=','valid')]}"/>
+                    <button string="Cancelar" type="object" name="cancelar" attrs="{'invisible':[('state','!=','close')]}"/>
+                </header>
+			<sheet>
+			<div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+				<group >
+					<group>	
+						<field name="partner_id" attrs="{'readonly' : [('state', '!=','draft')]}"/>
+					</group>
+					<group>
+						<field name="fecha_de_salida" attrs="{'readonly' : [('state', '!=','draft')]}"/>
+						<field name="fecha_de_regreso" attrs="{'readonly' : [('state', '=','close')], 'required': [('state', '=','valid')]}"/>
+					</group>	
+								
+				</group>
+				<group>
+					<field name="facturas_ids" attrs="{'readonly' : [('state', '=','close')]}">
+					<tree editable="bottom">
+						<field name="folio" domain="[('type','=','out_invoice'),('entregado','!=',True)]" required='1' attrs="{'readonly' : [('parent.state', '!=','draft')]}" options="{'no_create': True}"/>
+						<field name="currency_id" invisible="1" force_save="1"/>
+						<field name="saldo_a_cobrar" widget='monetary' options="{'currency_field': 'currency_id'}"  attrs="{'readonly' : [('parent.state', '!=','draft')]}"/>
+						<field name="peso" attrs="{'readonly' : [('parent.state', '!=','draft')]}"/>
+						<field name="saldo_cobrado"  attrs="{'column_invisible': [('parent.state', '=', 'draft')], }"/>
+						<field name="regreso"  widget="selection" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+						<field name="observaciones" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+						<field name="volumen" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+						<field name="precio" attrs="{'column_invisible': [('parent.state', '=', 'draft')], 'readonly' : [('regreso', '=','devuelto')]}"/>
+						<field name="flete" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+					</tree>
+					</field>
+					<field name="ceompras_ids" attrs="{'readonly' : [('state', '=','close')]}">
+						<tree editable="bottom">
+							<field name="folio" domain="[('state','!=', 'cancel'),('entregado','!=',True)]" required='1' attrs="{'readonly' : [('parent.state', '!=','draft')]}" options="{'no_create': True}"/>
+							<!--<field name="currency_id" invisible="1"/>-->
+							<!--<field name="saldo_a_cobrar" widget='monetary' options="{'currency_field': 'currency_id'}"/>-->
+							<field name="peso" attrs="{'readonly' : [('parent.state', '!=','draft')]}"/>
+							<!--<field name="saldo_cobrado"  attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>-->
+							<field name="regreso"  widget="selection" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+							<field name="observaciones" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+							<field name="volumen" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+     						<field name="precio" attrs="{'column_invisible': [('parent.state', '=', 'draft')], 'readonly' : [('regreso', '=','devuelto')]}"/>
+							<field name="flete" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+						</tree> 
+					</field>
+					<field name="transferencias_ids" attrs="{'readonly' : [('state', '=','close')]}">
+						<tree editable="bottom">
+							<field name="folio" domain="[('picking_type_code','=','internal'),('entregado','!=',True)]" required='1' attrs="{'readonly' : [('parent.state', '!=','draft')]}" options="{'no_create': True}"/>
+							<!--<field name="currency_id" invisible="1"/>-->
+							<!--<field name="saldo_a_cobrar" widget='monetary' options="{'currency_field': 'currency_id'}"/>-->
+							<field name="peso" attrs="{'readonly' : [('parent.state', '!=','draft')]}"/>
+							<!--<field name="saldo_cobrado"  attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>-->
+							<field name="regreso"  widget="selection" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+							<field name="observaciones" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+							<field name="volumen" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+    						<field name="precio" attrs="{'column_invisible': [('parent.state', '=', 'draft')], 'readonly' : [('regreso', '=','devuelto')]}"/>
+							<field name="flete" attrs="{'column_invisible': [('parent.state', '=', 'draft')]}"/>
+						</tree>
+					</field>
+				</group>
+			</sheet>
+		</form>
+		</field>
+	</record>
+	<record id="search_view_transporte_filter" model="ir.ui.view">
+            <field name="name">Relación de transporte transporte</field>
+            <field name="model">transporte</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Transporte">
+                <field name="facturas_ids" string="Facturas" filter_domain="[('facturas_ids.folio', 'ilike', self)]"/>
+                <field name="ceompras_ids" string="Compras" filter_domain="[('ceompras_ids.folio', 'ilike', self)]"/>
+                <field name="transferencias_ids" string="Transferencias" filter_domain="[('transferencias_ids.folio', 'ilike', self)]"/> 
+                </search>
+            </field>
+     </record>    
+	
+	<record id="tree_view_transporte" model="ir.ui.view">
+            <field name="name">Relación de transporte transporte</field>
+	   		<field name="model">transporte</field>
+	   		<field name="view_type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Relación de transporte" default_order="name desc">
+                    <field name="name" string="Relación "/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="fecha_de_salida"/>
+                    <field name="fecha_de_regreso"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+    </record>
+	<record id="add_sub_menu_operation_stock_picking" model="ir.actions.act_window">
+	    <field name="name">Reference de transporte</field>
+		<field name="res_model">transporte</field>
+	    <field name="view_type">form</field>
+    	<field name="view_mode">tree,form</field>    
+   </record>
+<menuitem id="add_sub_menu_operation_stock_picking_transporte"  
+		  action="add_sub_menu_operation_stock_picking" 
+		  name="Relación de transporte" 
+		  parent="stock.menu_stock_warehouse_mgmt" 
+		  sequence="136"  
+		  />	
+</odoo>
+	

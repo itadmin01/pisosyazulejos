@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transporte,access_transporte,model_transporte,base.group_user,1,1,1,1
+transport_facturas,transport_facturas,model_transport_facturas,base.group_user,1,1,1,1
+transporte_transferencias,transporte_transferencias,model_transport_transferencias,base.group_user,1,1,1,1
+transport_ceompras,transport_ceompras,model_transport_ceompras,base.group_user,1,1,1,1

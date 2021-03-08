@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+         <template id="inventory_delivery_slip_qweb_report" inherit_id="stock.report_delivery_document">
+            <xpath expr="//div[hasclass('page')]" position="after">
+            <!-- <xpath expr="//div[hasclass('page')]" position="after"> -->
+            <!-- <xpath expr="//div[@class='page']" position="after"> -->
+                <t t-if="o.digital_sign_inventory_compute">
+                    <t t-if="o.sign_applicable_inside != 'picking'">
+                        <div class="offset-8">
+                            <table class="table table-sm;page-break-inside: avoid;">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td>
+                                        <strong>Signature</strong>
+                                    </td>
+                                    <img t-att-src="'data:image/png;base64,%s' % to_text(o.digital_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="inventory_picking_operation_qweb_report" inherit_id="stock.report_picking">
+            <xpath expr="//div[hasclass('page')]" position="after">
+            <!-- <xpath expr="//div[@class='page']" position="after"> -->
+                <t t-if="o.digital_sign_inventory_compute">
+                    <t t-if="o.sign_applicable_inside != 'delivery'">
+                        <div class="offset-8">
+                            <table class="table table-sm;page-break-inside: avoid;">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td>
+                                        <strong>Signature</strong>
+                                    </td>
+                                    <img t-att-src="'data:image/png;base64,%s' % to_text(o.digital_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>
